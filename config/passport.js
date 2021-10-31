@@ -21,7 +21,7 @@ module.exports = app => {
       User.findOne({ where: { account: username } }).then(user => {
         if (!user) return cb(null, false, req.flash('error_messages', '帳號或密碼輸入錯誤'))
         if (!bcrypt.compareSync(password, user.password)) return cb(null, false, req.flash('error_messages', '帳號或密碼輸入錯誤！'))
-        return cb(null, user, req.flash('success_messages', '登入成功！'))
+        return cb(null, user)
       })
     }
   ))
