@@ -4,7 +4,7 @@
 使用 Express, Node.js, Handlebars
 製作一個功能類似 Twitter 的社群網站。
 
-[專案網址](https://simple-twitter-fullstack.herokuapp.com)
+[專案網址](https://simple-twitter-tj.herokuapp.com)
 
 # 專案畫面
 
@@ -60,7 +60,7 @@
 1. 打開終端機(Terminal)，Clone 此專案至本地電腦
 
 ```
-git clone https://github.com/ddssads/twitter-fullstack-2020.git
+git clone https://github.com/Jin0704/twitter-fullstack-2020.git
 ```
 
 2. 開啟終端機，進入專案資料夾
