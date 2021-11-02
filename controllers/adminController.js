@@ -4,11 +4,9 @@ const helpers = require('../_helpers')
 const User = db.User
 const Tweet = db.Tweet
 const Like = db.Like
-const Followship = db.Followship
 const Reply = db.Reply
-const Message = db.Message
 const getTopUser = require('../_helpers').getTopUser
-const pageLimit = 6
+const pageLimit = 8
 
 //sequelize literal
 function tweetsCouont(id) {
