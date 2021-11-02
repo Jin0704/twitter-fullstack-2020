@@ -29,8 +29,12 @@
           <tbody>
             {{#each tweets}}
             <tr>
-              <th scope="row" style="width: 100px;"><img src="{{this.avatar}}" alt=""
-                  style="border-radius: 50%;width:100%"></th>
+
+              <th scope="row" style="width: 100px;">
+                <a href="/admin/users/{{this.UserId}}">
+                  <img src="{{this.avatar}}" alt="" style="border-radius: 50%;width:100%">
+                </a>
+              </th>
               <td>{{this.name}} {{this.account}}
                 <br>
                 {{this.description}}

@@ -30,13 +30,17 @@
     <div>
       <div class="user-info" style="height: ; position: relative;border: 6px solid #FFFFFF;margin-left:200px">
         <div class="cover-photo" style="height: 200px;">
-          <img src="{{this.cover}}" style="object-fit: cover;width: 100%; height: 100%" alt="...">
+          <a href="/admin/users/{{this.id}}">
+            <img src="{{this.cover}}" style="object-fit: cover;width: 100%; height: 100%" alt="...">
+          </a>
         </div>
 
         <div class="photo">
-          <img src="{{this.avatar}}"
-            style="width: 140px; height: 140px; border: 4px solid #FFFFFF; border-radius: 50%; position: absolute; top: 100px; left: 82px"
-            alt="">
+          <a href="/admin/users/{{this.id}}">
+            <img src="{{this.avatar}}"
+              style="width: 140px; height: 140px; border: 4px solid #FFFFFF; border-radius: 50%; position: absolute; top: 100px; left: 82px"
+              alt="">
+          </a>
         </div>
         <div class="d-flex flex-column" style="margin-top: 45px; margin-left: 125px">
           <span style="font-weight: 900; font-size: 19px; color: #1C1C1C;">{{this.name}}</span>

@@ -1,9 +1,46 @@
 const db = require('../models')
+const sequelize = require('sequelize')
+const helpers = require('../_helpers')
 const User = db.User
 const Tweet = db.Tweet
 const Like = db.Like
+const Followship = db.Followship
+const Reply = db.Reply
+const Message = db.Message
+const getTopUser = require('../_helpers').getTopUser
 const pageLimit = 6
 
+//sequelize literal
+function tweetsCouont(id) {
+  return `(
+    SELECT COUNT(*)
+              FROM Tweets AS Tweet
+              WHERE Tweet.UserId = ${id}
+  )`
+}
+function followingCount(id) {
+  return `(
+              SELECT COUNT(*)
+              FROM Followships AS Followship
+              WHERE Followship.followerId = ${id}
+          )`
+}
+function followerCount(id) {
+  return `(
+              SELECT COUNT(*)
+              FROM Followships As Followship
+              WHERE Followship.followingId = ${id}
+            )`
+}
+
+function isLiked(req, tweet) {
+  return helpers.getUser(req).Likes ? helpers.getUser(req).Likes.map(d => d.TweetId).includes(tweet.id) : false
+}
+
+
+function checkIsFollowed(req, userId) {
+  return helpers.getUser(req).Followings ? helpers.getUser(req).Followings.map(d => d.id).includes(Number(userId)) : false
+}
 
 const adminController = {
 
@@ -97,6 +134,48 @@ const adminController = {
       next: next
     })
   },
+
+  getUser: async (req, res) => {
+    const users = await getTopUser(req)
+    let userView = await User.findByPk(req.params.id, {
+      attributes: {
+        include: [
+          [
+            sequelize.literal(tweetsCouont(req.params.id)),
+            'TweetsCount'
+          ],
+          [
+            sequelize.literal(followingCount(req.params.id)),
+            'FollowingCount'
+          ],
+          [
+            sequelize.literal(followerCount(req.params.id)),
+            'FollowerCount'
+          ]
+        ]
+      },
+      include: [
+        { model: Like, include: [{ model: Tweet, include: [User, Reply, Like] }] }
+      ],
+      order: [
+        [Like, 'createdAt', 'DESC'],
+      ]
+    })
+    userView = userView.toJSON()
+    if (userView.Likes) {
+      userView.tweets = userView.Likes.map(like => {
+        return like.tweet
+      })
+      userView.tweets.map(t => {
+        t.totalReplies = t.Replies.length
+        t.totalLikes = t.Likes.length
+        t.isLiked = isLiked(req, t)
+      })
+    }
+    const isFollowed = checkIsFollowed(req, userView.id)
+    return res.render('admin/user', { userView, users, isFollowed })
+
+  }
 }
 
 module.exports = adminController
