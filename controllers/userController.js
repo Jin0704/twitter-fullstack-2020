@@ -79,7 +79,7 @@ const userController = {
                 password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
               }).then(user => {
                 req.flash('success_messages', '成功註冊帳號！')
-                return res.redirect('/signup')
+                return res.redirect('/signin')
               })
           })
 
@@ -92,8 +92,7 @@ const userController = {
   },
 
   signIn: (req, res) => {
-    req.flash('success_messages', '成功登入！')
-    res.redirect('/tweets')
+    return res.render('/tweets')
   },
 
   logout: (req, res) => {

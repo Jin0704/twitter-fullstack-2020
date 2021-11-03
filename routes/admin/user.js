@@ -5,4 +5,6 @@ const adminController = require('../../controllers/adminController')
 //admin/user
 router.get('/', authenticatedAdmin, adminController.getUsers)
 router.get('/:id', authenticatedAdmin, adminController.getUser)
+router.put('/:id', authenticatedAdmin, adminController.freezeUser)
+
 module.exports = router

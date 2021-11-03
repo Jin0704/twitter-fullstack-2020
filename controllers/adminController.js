@@ -85,7 +85,7 @@ const adminController = {
   },
 
   deleteTweet: async (req, res) => {
-    const tweet = await Tweet.findById(req.params.id)
+    const tweet = await Tweet.findByPk(req.params.id)
     await tweet.destroy()
     req.flash('success_messages', '刪除成功')
     return res.redirect('/admin/tweets')
@@ -172,8 +172,15 @@ const adminController = {
     }
     const isFollowed = checkIsFollowed(req, userView.id)
     return res.render('admin/user', { userView, users, isFollowed })
-
+  },
+  freezeUser: async (req, res) => {
+    let user = await User.findByPk(req.params.id)
+    await user.update({
+      role: req.body.role
+    })
+    req.flash('success_messages', '更新成功')
+    return res.redirect('back')
   }
-}
 
+}
 module.exports = adminController

@@ -4,31 +4,9 @@ const helpers = require('../_helpers')
 const Tweet = db.Tweet
 const Like = db.Like
 const Reply = db.Reply
-const pageLimit = 7 
+const pageLimit = 7
 const tweetController = {
-  // getTweet: async (req, res) => {
-  //   //tweet data
-  //   let tweets = await Tweet.findAll({
-  //     order: [['createdAt', 'DESC']],
-  //     include: [User, Like, Reply]
-  //   })
-  //   tweets = tweets.map(t => ({
-  //     ...t.dataValues,
-  //     userName: t.User.name,
-  //     userId: t.User.id,
-  //     userAvatar: t.User.avatar,
-  //     userAccount: t.User.account,
-  //     LikedCount: t.Likes.length,
-  //     ReplyCount: t.Replies.length,
-  //     isLiked: helpers.getUser(req).Likes ? helpers.getUser(req).Likes.map(d => d.TweetId).includes(t.id) : false
-  //   }))
 
-  //   //user data
-  //   let users = await helpers.getTopUser(req)
-
-  //   return res.render('tweets', { users, tweets })
-  // },
-  // 分頁
   getTweet: async (req, res) => {
     //-----------------------------page
     let offset = 0
@@ -40,17 +18,17 @@ const tweetController = {
       offset, limit: pageLimit,
       order: [['createdAt', 'DESC']],
       include: [User, Like, Reply]
-    })    
+    })
 
     //-----------------------------page
-    let pageCount = await Tweet.findAndCountAll({}) 
-    const page = Number(req.query.page) || 1 
-    const pages = Math.ceil(pageCount.count / pageLimit)    
-    const totalPage = Array.from({ length: pages }).map((_, index) => index + 1) 
+    let pageCount = await Tweet.findAndCountAll({})
+    const page = Number(req.query.page) || 1
+    const pages = Math.ceil(pageCount.count / pageLimit)
+    const totalPage = Array.from({ length: pages }).map((_, index) => index + 1)
     const prev = page - 1 < 1 ? 1 : page - 1
     const next = page + 1 > pages ? pages : page + 1
     //-----------------------------page
-    
+
     tweets = tweets.map(t => ({
       ...t.dataValues,
       userName: t.User.name,
@@ -60,13 +38,13 @@ const tweetController = {
       LikedCount: t.Likes.length,
       ReplyCount: t.Replies.length,
       isLiked: helpers.getUser(req).Likes ? helpers.getUser(req).Likes.map(d => d.TweetId).includes(t.id) : false
-    }))    
+    }))
 
     //user data
     let users = await helpers.getTopUser(req)
 
     return res.render('tweets', { users, tweets, page, totalPage, prev, next })
-  },  
+  },
 
   postTweet: async (req, res) => {
     const { description } = req.body
@@ -85,8 +63,8 @@ const tweetController = {
     return res.redirect('/tweets')
   },
 
-  getReply: async (req, res) => {    
-    let tweet = await Tweet.findByPk(req.params.id, {      
+  getReply: async (req, res) => {
+    let tweet = await Tweet.findByPk(req.params.id, {
       order: [[{ model: Reply }, 'createdAt', 'DESC']],
       include: [
         User,
@@ -94,7 +72,7 @@ const tweetController = {
         { model: Reply, include: [User] },
       ]
     })
-    
+
     tweet = tweet.toJSON()
     const isLiked = tweet.Likes ? tweet.Likes.some(d => d.UserId === helpers.getUser(req).id) : false
 
