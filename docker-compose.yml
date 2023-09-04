@@ -23,7 +23,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DB=shopping_cart
+      - MYSQL_DB=ac_twitter_workspace
     expose:
       - 3308
     ports:
