@@ -4,7 +4,7 @@
 使用 Express, Node.js, Handlebars
 製作一個功能類似 Twitter 的社群網站。
 
-[專案網址](https://simple-twitter-tj.herokuapp.com)
+[專案網址](https://simple-twitter.tjtigertw.com/)
 
 # 專案畫面
 
